@@ -43,4 +43,4 @@ class Platformer:
         self.window.window.fill(self.window.COLOR)
 
     def draw_level(self):
-        self.level.update_and_draw_tiles()
+        self.level.draw()

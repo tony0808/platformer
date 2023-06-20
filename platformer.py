@@ -1,10 +1,13 @@
 import pygame
 from window import Window
+from level import Level
+from map import Map
 
 class Platformer:
 
     def __init__(self):
         self.window = Window()
+        self.level = Level(Map.map_0, self.window.window)
         self.running = True
         self.FPS = 60
         self.clock = pygame.time.Clock()
@@ -33,4 +36,11 @@ class Platformer:
         self.clock.tick(self.FPS)
     
     def draw_window(self):
+        self.fill_window_color()
+        self.draw_level()
+    
+    def fill_window_color(self):
         self.window.window.fill(self.window.COLOR)
+
+    def draw_level(self):
+        self.level.update_and_draw_tiles()

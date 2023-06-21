@@ -35,15 +35,50 @@ class Level:
         self.update_player()
 
     def update_tiles(self):
-        self.tiles.update(self.world_shift)
         self.tiles.draw(self.window)
+        self.tiles.update(self.world_shift)
         
     def update_player(self):
-        self.player.update()
-        self.player.draw(self.window)
+        self.draw_player()        
         self.update_player_movement()
-    
+        self.update_player_speed_and_shift_world()
+
     def update_player_movement(self):
+        self.update_player_horizontal_movement()
+        self.update_player_vertical_movement()
+
+    def update_player_horizontal_movement(self):
+        self.player.sprite.update_horizontal_direction()
+        self.player.sprite.update_horizontal_movement()
+        self.check_player_horizontal_collisions()
+    
+    def update_player_vertical_movement(self):
+        self.player.sprite.check_for_jump_movement()
+        self.player.sprite.apply_gravity()
+        self.check_player_vertical_collisions()
+
+    def check_player_horizontal_collisions(self):
+        for sprite in self.tiles.sprites():
+            if sprite.rect.colliderect(self.player.sprite.rect):
+                if self.player.sprite.direction.x < 0:
+                    self.player.sprite.rect.left = sprite.rect.right
+                elif self.player.sprite.direction.x > 0:
+                    self.player.sprite.rect.right = sprite.rect.left
+
+    def check_player_vertical_collisions(self):
+        for sprite in self.tiles.sprites():
+            if sprite.rect.colliderect(self.player.sprite.rect):
+                if self.player.sprite.direction.y < 0:
+                    self.player.sprite.direction.y = 0
+                    self.player.sprite.rect.top = sprite.rect.bottom
+                elif self.player.sprite.direction.y > 0:
+                    self.player.sprite.direction.y = 0
+                    self.player.sprite.rect.bottom = sprite.rect.top
+
+    def draw_player(self):
+        self.player.draw(self.window)
+
+    def update_player_speed_and_shift_world(self):
         player = self.player.sprite
         player_x = player.rect.centerx
         direction_x = player.direction.x

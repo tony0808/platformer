@@ -11,14 +11,8 @@ class Player(pygame.sprite.Sprite):
         self.speed = 8
         self.gravity = 0.8
         self.jump_speed = -16
-    
-    def update(self):
-        self.check_horizontal_movement()
-        self.check_vertical_movement()
-        self.apply_gravity()
-        self.update_direction()
         
-    def check_horizontal_movement(self):
+    def update_horizontal_direction(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_RIGHT]:
             self.direction.x = 1
@@ -27,7 +21,10 @@ class Player(pygame.sprite.Sprite):
         else:
             self.direction.x = 0
     
-    def check_vertical_movement(self, keys):
+    def update_horizontal_movement(self):
+        self.rect.x += self.direction.x * self.speed
+        
+    def check_for_jump_movement(self):
         if pygame.key.get_pressed()[pygame.K_SPACE]:
             self.jump()
 
@@ -37,7 +34,3 @@ class Player(pygame.sprite.Sprite):
 
     def jump(self):
         self.direction.y = self.jump_speed
-
-    def update_direction(self):
-        self.rect.x += self.direction.x * self.speed
-        

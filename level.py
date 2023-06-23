@@ -39,9 +39,14 @@ class Level:
         self.tiles.update(self.world_shift)
         
     def update_player(self):
-        self.draw_player()        
+        self.draw_player() 
+        self.handle_player_animation()      
         self.update_player_movement()
         self.update_player_speed_and_shift_world()
+
+    def handle_player_animation(self):
+        self.player.sprite.set_movement_status()
+        self.player.sprite.animate()
 
     def update_player_movement(self):
         self.update_player_horizontal_movement()
